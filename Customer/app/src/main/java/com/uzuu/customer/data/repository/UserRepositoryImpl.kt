@@ -3,8 +3,8 @@ package com.uzuu.customer.data.repository
 import com.uzuu.customer.core.result.ApiResult
 import com.uzuu.customer.core.result.safeApiCall
 import com.uzuu.customer.data.local.datasource.UserDataLocalSource
+import com.uzuu.customer.data.mapper.userDtoToDomain
 import com.uzuu.customer.data.mapper.userEntityToDomain
-import com.uzuu.customer.data.mapper.userdomainToEntity
 import com.uzuu.customer.data.mapper.userdomainToEntity
 import com.uzuu.customer.data.remote.datasource.UserRemoteDataSource
 import com.uzuu.customer.data.remote.dto.request.UserRequestDto
@@ -17,6 +17,8 @@ class UserRepositoryImpl(
     private val userLocal: UserDataLocalSource,
     private val userRemote: UserRemoteDataSource
 ) : UserRepository {
+
+    // ── Remote ───────────────────────────────────────────────────────────────
 
     override suspend fun getMyInfo(): ApiResult<UserResponseDto> =
         safeApiCall {
@@ -41,6 +43,8 @@ class UserRepositoryImpl(
             }
         }
 
+    // ── Local (Room) ──────────────────────────────────────────────────────────
+
     override val users: Flow<List<Users>>
         get() = TODO("Not yet implemented")
 
@@ -48,8 +52,15 @@ class UserRepositoryImpl(
         return userLocal.createUser(user.userdomainToEntity(null))
     }
 
+    /**
+     * Khi update phải giữ lại url avatar cũ.
+     * Fetch entity hiện tại từ DB rồi truyền vào userdomainToEntity(old).
+     */
     override suspend fun updateUser(user: Users): Int {
-        return userLocal.updateUser(user.userdomainToEntity(null))
+        val existing = runCatching {
+            userLocal.getUserByUsername(user.username)
+        }.getOrNull()
+        return userLocal.updateUser(user.userdomainToEntity(existing))
     }
 
     override suspend fun getUserByUsername(username: String): Users {
