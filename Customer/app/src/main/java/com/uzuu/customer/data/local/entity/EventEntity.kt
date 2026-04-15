@@ -20,5 +20,6 @@ data class EventEntity(
     val description: String?,
     val status: String,
     val imageUrls: String = "",
+    val ticketTypes: String = "",
     val cachedAt: Long = System.currentTimeMillis()
 )

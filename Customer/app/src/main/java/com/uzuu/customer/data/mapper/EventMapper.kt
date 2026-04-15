@@ -33,6 +33,12 @@ fun EventEntity.toDomain(): Event {
     } catch (e: Exception) {
         emptyList()
     }
+    val ticketList: List<com.uzuu.customer.domain.model.TicketType> = try {
+        if (ticketTypes.isBlank()) emptyList()
+        else gson.fromJson(ticketTypes, object : TypeToken<List<com.uzuu.customer.domain.model.TicketType>>() {}.type) ?: emptyList()
+    } catch (e: Exception) {
+        emptyList()
+    }
     return Event(
         id            = id,
         name          = name,
@@ -45,7 +51,7 @@ fun EventEntity.toDomain(): Event {
         description   = description,
         status        = status,
         imageUrls     = imageList,
-        ticketTypes   = emptyList() // Ticket types không lưu trong cache
+        ticketTypes   = ticketList
     )
 }
 
@@ -62,6 +68,7 @@ fun Event.toEntity(): EventEntity {
         saleEndDate   = saleEndDate,
         description   = description,
         status        = status,
-        imageUrls     = gson.toJson(imageUrls)
+        imageUrls     = gson.toJson(imageUrls),
+        ticketTypes   = gson.toJson(ticketTypes)
     )
 }
