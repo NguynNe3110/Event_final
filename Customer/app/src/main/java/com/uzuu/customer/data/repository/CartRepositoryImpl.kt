@@ -2,13 +2,15 @@ package com.uzuu.customer.data.repository
 
 import com.uzuu.customer.core.result.ApiResult
 import com.uzuu.customer.core.result.safeApiCall
+import com.uzuu.customer.data.local.datasource.CartLocalDataSource
 import com.uzuu.customer.data.mapper.toDomain
 import com.uzuu.customer.data.remote.datasource.CartRemoteDataSource
 import com.uzuu.customer.domain.model.Cart
 import com.uzuu.customer.domain.repository.CartRepository
 
 class CartRepositoryImpl(
-    private val remote: CartRemoteDataSource
+    private val remote: CartRemoteDataSource,
+    private val local: CartLocalDataSource
 ) : CartRepository {
 
     private fun isOk(code: Int) = code == 200 || code == 0 || code == 1000

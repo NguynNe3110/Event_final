@@ -2,13 +2,15 @@ package com.uzuu.customer.data.repository
 
 import com.uzuu.customer.core.result.ApiResult
 import com.uzuu.customer.core.result.safeApiCall
+import com.uzuu.customer.data.local.datasource.OrderLocalDataSource
 import com.uzuu.customer.data.remote.datasource.OrderRemoteDataSource
 import com.uzuu.customer.domain.model.Order
 import com.uzuu.customer.domain.model.PagedResult
 import com.uzuu.customer.domain.repository.OrderRepository
 
 class OrderRepositoryImpl(
-    private val remote: OrderRemoteDataSource
+    private val remote: OrderRemoteDataSource,
+    private val local: OrderLocalDataSource
 ) : OrderRepository {
 
     private fun isOk(code: Int) = code == 200 || code == 0 || code == 1000
