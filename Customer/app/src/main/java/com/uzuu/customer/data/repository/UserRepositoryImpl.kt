@@ -12,6 +12,7 @@ import com.uzuu.customer.data.remote.dto.response.UserResponseDto
 import com.uzuu.customer.domain.model.Users
 import com.uzuu.customer.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class UserRepositoryImpl(
     private val userLocal: UserDataLocalSource,

@@ -3,6 +3,7 @@ package com.uzuu.customer.data.repository
 import com.uzuu.customer.data.local.datasource.EventLocalDataSource
 import com.uzuu.customer.data.mapper.toEntity
 import com.uzuu.customer.data.mapper.eventDtoToDomain
+import com.uzuu.customer.data.mapper.toDomain
 import com.uzuu.customer.data.remote.datasource.EventRemoteDataSource
 import com.uzuu.customer.domain.model.Event
 import com.uzuu.customer.domain.model.PagedResult
@@ -65,7 +66,7 @@ class EventRepositoryImpl(
 
     override suspend fun getCachedEvents(): List<Event> {
         return try {
-            eventLocal.getAllEvents().map { it.toDomain() }
+            eventLocal.getAllEvents().map {it.toDomain() }
         } catch (e: Exception) {
             println("DEBUG [EventRepositoryImpl] Error getting cached events: ${e.message}")
             emptyList()
