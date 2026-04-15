@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shapeAppearanceOverlay="@style/CardRoundedTop"
+        app:contentPadding="12dp"
+        android:backgroundTint="@color/blue_surface_9"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar"
+                app:strokeColor="@color/blue_border_8"
+                android:padding="2dp"
+                app:strokeWidth="2dp"
+                app:shapeAppearanceOverlay="@style/CircleImage"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                app:contentPadding="12dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edt_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="Tìm kiếm sự kiện"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingLeft="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/blue_primary_650"
+        android:text="Danh mục"/>
+
+    <!--
+        clipChildren="false" + clipToPadding="false" trên cả LinearLayout lẫn RecyclerView
+        → cho phép shadow của MaterialCardView hiển thị ra ngoài biên container
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_category"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:paddingHorizontal="8dp"
+            tools:listitem="@layout/item_category_in_home"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/blue_primary_650"
+            android:text="Các sự kiện nổi bật"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerEvent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_end_home"/>
+
+    </LinearLayout>
+
+</LinearLayout>

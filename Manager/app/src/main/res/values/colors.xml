@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Kết quả check-in thành công -->
+    <color name="result_success_bg">#E8F5E9</color>
+    <color name="result_success_text">#2E7D32</color>
+
+    <!-- Kết quả check-in thất bại -->
+    <color name="result_fail_bg">#FFEBEE</color>
+    <color name="result_fail_text">#C62828</color>
+</resources>

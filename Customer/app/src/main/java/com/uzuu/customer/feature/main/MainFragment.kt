@@ -1,0 +1,52 @@
+package com.uzuu.customer.feature.main
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.uzuu.customer.R
+import com.uzuu.customer.databinding.FragmentHomeBinding
+import com.uzuu.customer.databinding.FragmentMainBinding
+
+class MainFragment : Fragment() {
+
+    private var _binding : FragmentMainBinding?= null
+    val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navHostFragment =
+            childFragmentManager.findFragmentById(R.id.main_nav_host) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            val navOptions = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setRestoreState(false)
+                .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = false)
+                .build()
+            return@setOnItemSelectedListener try {
+                navController.navigate(item.itemId, null, navOptions)
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNav.menu.findItem(destination.id)?.isChecked = true
+        }
+    }
+}
