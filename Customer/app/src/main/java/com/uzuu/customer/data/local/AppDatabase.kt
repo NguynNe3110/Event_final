@@ -27,7 +27,7 @@ import com.uzuu.customer.data.local.entity.UsersEntity
         CartItemEntity::class,
         OrderEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

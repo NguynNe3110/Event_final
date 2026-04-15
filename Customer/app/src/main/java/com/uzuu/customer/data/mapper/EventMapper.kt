@@ -33,9 +33,9 @@ fun EventEntity.toDomain(): Event {
     } catch (e: Exception) {
         emptyList()
     }
-    val ticketList: List<com.uzuu.customer.domain.model.TicketType> = try {
+    val ticketList: List<com.uzuu.customer.domain.model.CategoryTicket> = try {
         if (ticketTypes.isBlank()) emptyList()
-        else gson.fromJson(ticketTypes, object : TypeToken<List<com.uzuu.customer.domain.model.TicketType>>() {}.type) ?: emptyList()
+        else gson.fromJson(ticketTypes, object : TypeToken<List<com.uzuu.customer.domain.model.CategoryTicket>>() {}.type) ?: emptyList()
     } catch (e: Exception) {
         emptyList()
     }
