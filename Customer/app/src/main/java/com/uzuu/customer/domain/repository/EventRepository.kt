@@ -5,6 +5,7 @@ import com.uzuu.customer.domain.model.PagedResult
 
 interface EventRepository {
     suspend fun getEvent(page: Int): PagedResult<Event>
+    suspend fun getCachedEvents(): List<Event>
 }
 
 

@@ -6,34 +6,27 @@
 *.aar
 
 # Android specific
-*.apk
-*.aab
-*.ap_
 build/
 .gradle/
-captures/
+local.properties
+.pro
+.cxx/
 .externalNativeBuild/
 
-# Dependencies
-node_modules/
-vendor/
-
-# Logs
-*.log
-
-# Environment
-.env
-.env.local
-.env.*
-
 # IDE
-.vscode/
 .idea/
 *.iml
 *.ipr
 *.iws
 
-# OS
-.DS_Store
-Thumbs.db
+# Gradle
+.gradle/
+gradle-app-setting.json
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.temp
 ```
