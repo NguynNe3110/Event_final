@@ -66,7 +66,21 @@ class UserRepositoryImpl(
     }
 
     override suspend fun getUserByUsername(username: String): Users {
-        return userLocal.getUserByUsername(username).userEntityToDomain()
+        return try {
+            userLocal.getUserByUsername(username).userEntityToDomain()
+        } catch (e: Exception) {
+            // If not found in local, try to fetch from remote and cache
+            val result = userRemote.getMyInfo()
+            if (result.code == 200 || result.code == 0 || result.code == 1000) {
+                val userDto = result.result
+                val domainUser = userDto.userDtoToDomain()
+                // Cache the user locally
+                userLocal.createUser(domainUser.userdomainToEntity(null))
+                domainUser
+            } else {
+                throw Exception("User not found")
+            }
+        }
     }
 
     override suspend fun deleteUserById(id: Int): Int {
