@@ -46,7 +46,9 @@ class UserRepositoryImpl(
     // ── Local (Room) ──────────────────────────────────────────────────────────
 
     override val users: Flow<List<Users>>
-        get() = TODO("Not yet implemented")
+        get() = userLocal.observeUser().map { entities -> 
+            entities.map { it.userEntityToDomain() }
+        }
 
     override suspend fun createUser(user: Users): Long {
         return userLocal.createUser(user.userdomainToEntity(null))
@@ -68,10 +70,10 @@ class UserRepositoryImpl(
     }
 
     override suspend fun deleteUserById(id: Int): Int {
-        TODO("Not yet implemented")
+        return userLocal.deleteUserById(id)
     }
 
     override suspend fun isUserExist(username: String): Boolean {
-        TODO("Not yet implemented")
+        return userLocal.isUserExist(username)
     }
 }
