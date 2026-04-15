@@ -3,6 +3,7 @@ package com.uzuu.customer.core.di
 import android.content.Context
 import com.uzuu.customer.data.local.AppDatabase
 import com.uzuu.customer.data.local.datasource.CartLocalDataSource
+import com.uzuu.customer.data.local.datasource.CategoryLocalDataSource
 import com.uzuu.customer.data.local.datasource.EventLocalDataSource
 import com.uzuu.customer.data.local.datasource.OrderLocalDataSource
 import com.uzuu.customer.data.local.datasource.TicketLocalDataSource
@@ -41,6 +42,7 @@ class AppContainer(context: Context) {
     val ticketLocal = TicketLocalDataSource(db.ticketDao())
     val cartLocal = CartLocalDataSource(db.cartDao())
     val orderLocal = OrderLocalDataSource(db.orderDao())
+    val categoryLocal = CategoryLocalDataSource(db.categoryDao())
 
     // ── Remote data sources ───────────────────────────────────────────────────
     val authRemote      = AuthRemoteDataSource(authApi = authApi)
@@ -55,7 +57,7 @@ class AppContainer(context: Context) {
     val userRepo        = UserRepositoryImpl(userLocal, userRemote)
     val authRepo        = AuthRepositoryImpl(authRemote)
     val eventRepo       = EventRepositoryImpl(eventRemote, eventLocal)
-    val categoryRepo    = CategoryRepositoryImpl(categoryRemote)
+    val categoryRepo    = CategoryRepositoryImpl(categoryRemote, categoryLocal)
     val cartRepo        = CartRepositoryImpl(cartRemote, cartLocal)
     val myTicketRepo    = MyTicketRepositoryImpl(myTicketRemote, ticketLocal)
     val orderRepo       = OrderRepositoryImpl(orderRemote, orderLocal)
