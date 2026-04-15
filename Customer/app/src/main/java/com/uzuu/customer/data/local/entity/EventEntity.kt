@@ -19,6 +19,6 @@ data class EventEntity(
     val saleEndDate: String?,
     val description: String?,
     val status: String,
-    val imageUrls: List<String>,
+    val imageUrls: String = "",
     val cachedAt: Long = System.currentTimeMillis()
 )

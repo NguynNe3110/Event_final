@@ -25,10 +25,11 @@ fun EventResponseDto.eventDtoToDomain(): Event {
     )
 }
 
-/** EventEntity.imageUrls lưu dạng JSON String → giải mã lại thành List<String> */
+/** EventEntity.imageUrls lưu JSON String → giải mã lại thành List<String> */
 fun EventEntity.toDomain(): Event {
     val imageList: List<String> = try {
-        gson.fromJson(imageUrls, object : TypeToken<List<String>>() {}.type) ?: emptyList()
+        if (imageUrls.isBlank()) emptyList()
+        else gson.fromJson(imageUrls, object : TypeToken<List<String>>() {}.type) ?: emptyList()
     } catch (e: Exception) {
         emptyList()
     }

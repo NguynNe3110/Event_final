@@ -15,6 +15,6 @@ data class Event(
     val saleEndDate: String?,
     val description: String?,
     val status: String,
-    val imageUrls: List<String>,
-    val ticketTypes: List<CategoryTicket>,
+    val imageUrls: List<String> = emptyList(),
+    val ticketTypes: List<CategoryTicket> = emptyList(),
 ) : Parcelable

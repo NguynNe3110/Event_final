@@ -3,26 +3,21 @@
 *.class
 *.o
 *.obj
+*.exe
+*.dll
 *.so
 *.a
-*.dll
-*.exe
 *.out
+build/
+dist/
 
 # Dependencies
-.gradle/
-build/
-target/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Environment
-.env
-.env.local
-*.env.*
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
 
 # Editors
 .vscode/
@@ -30,38 +25,16 @@ target/
 *.swp
 *.swo
 
-# System files
+# System
 .DS_Store
 Thumbs.db
+*.tmp
 
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
+# Environment
+.env
+.env.local
+*.env.*
 
-# Python specific
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-*.egg-info/
-.eggs/
-dist/
-*.egg
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.cache/
-nosetests.xml
-coverage.xml
-*.cover
+# Logs
 *.log
-.git/
-*.orig
-*~
-.DS_Store
-Thumbs.db
 ```
