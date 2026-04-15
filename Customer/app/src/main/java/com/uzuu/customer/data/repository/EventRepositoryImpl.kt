@@ -16,7 +16,7 @@ class EventRepositoryImpl(
     override suspend fun getEvent(page: Int): PagedResult<Event> {
         println("DEBUG [EventRepositoryImpl] getEvent(page=$page) called")
 
-        try {
+        return try {
             val response = eventRemote.getEvent(page)
             println("DEBUG [EventRepositoryImpl] raw response — code=${response.code}, message='${response.message}'")
 
@@ -30,7 +30,7 @@ class EventRepositoryImpl(
                 eventLocal.cacheEvents(entities)
                 println("DEBUG [EventRepositoryImpl] Cached ${events.size} events")
                 
-                return PagedResult(
+                PagedResult(
                     data = events,
                     page = pageData.number,
                     totalPages = pageData.totalPages,
@@ -39,20 +39,21 @@ class EventRepositoryImpl(
                 )
             } else {
                 println("DEBUG [EventRepositoryImpl] WARNING: content is empty!")
+                // If API returns empty, try to load from cache
+                val cachedEvents = getCachedEvents()
+                PagedResult(
+                    data = cachedEvents,
+                    page = 0,
+                    totalPages = 1,
+                    totalElements = cachedEvents.size.toLong(),
+                    isLast = true
+                )
             }
-
-            return PagedResult(
-                data = emptyList(),
-                page = pageData.number,
-                totalPages = pageData.totalPages,
-                totalElements = pageData.totalElements,
-                isLast = pageData.last
-            )
         } catch (e: Exception) {
             println("DEBUG [EventRepositoryImpl] Error fetching events: ${e.message}")
             // Return cached data on error
             val cachedEvents = getCachedEvents()
-            return PagedResult(
+            PagedResult(
                 data = cachedEvents,
                 page = 0,
                 totalPages = 1,
