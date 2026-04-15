@@ -2,12 +2,14 @@ package com.uzuu.customer.data.repository
 
 import com.uzuu.customer.core.result.ApiResult
 import com.uzuu.customer.core.result.safeApiCall
+import com.uzuu.customer.data.local.datasource.TicketLocalDataSource
 import com.uzuu.customer.data.remote.datasource.MyTicketRemoteDataSource
 import com.uzuu.customer.domain.model.MyTicket
 import com.uzuu.customer.domain.repository.MyTicketRepository
 
 class MyTicketRepositoryImpl(
-    private val remote: MyTicketRemoteDataSource
+    private val remote: MyTicketRemoteDataSource,
+    private val local: TicketLocalDataSource
 ) : MyTicketRepository {
 
     override suspend fun getMyTickets(): ApiResult<List<MyTicket>> =
