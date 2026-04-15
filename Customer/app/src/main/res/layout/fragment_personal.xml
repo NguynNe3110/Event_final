@@ -271,8 +271,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Trợ giúp"
-                        android:textSize="15sp"
-                        android:textColor="@color/blue_text_secondary"/>
+                        android:textSize="15sp"/>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
