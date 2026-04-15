@@ -2,8 +2,11 @@ package com.uzuu.customer.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.uzuu.customer.data.local.Converters
 
 @Entity(tableName = "events")
+@TypeConverters(Converters::class)
 data class EventEntity(
     @PrimaryKey
     val id: Long,
@@ -16,6 +19,6 @@ data class EventEntity(
     val saleEndDate: String?,
     val description: String?,
     val status: String,
-    val imageUrls: String, // Stored as JSON
+    val imageUrls: List<String>,
     val cachedAt: Long = System.currentTimeMillis()
 )
