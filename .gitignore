@@ -8,33 +8,43 @@
 *.so
 *.a
 *.out
-build/
-dist/
+*.pyc
+__pycache__/
 
 # Dependencies
-__pycache__/
-.mypy_cache/
-.pytest_cache/
-.coverage
-coverage/
-htmlcov/
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# System
-.DS_Store
-Thumbs.db
-*.tmp
-
-# Environment
+node_modules/
+venv/
+.venv/
 .env
 .env.local
 *.env.*
 
+# Build directories (common in Java/Kotlin projects)
+build/
+target/
+.gradle/
+dist/
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# System files
+.DS_Store
+Thumbs.db
+
 # Logs
 *.log
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Cache directories
+.mypy_cache/
+.pytest_cache/
 ```

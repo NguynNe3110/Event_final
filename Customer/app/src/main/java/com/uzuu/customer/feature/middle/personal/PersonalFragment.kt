@@ -102,7 +102,8 @@ class PersonalFragment : Fragment() {
             viewModel.featureFuture()
         }
         binding.rowHelp.setOnClickListener {
-            viewModel.featureFuture()
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://blog-guide-event-mng.vercel.app"))
+            startActivity(intent)
         }
     }
 
