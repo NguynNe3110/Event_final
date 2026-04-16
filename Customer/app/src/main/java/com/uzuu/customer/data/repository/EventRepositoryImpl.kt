@@ -17,18 +17,7 @@ class EventRepositoryImpl(
     override suspend fun getEvent(page: Int): PagedResult<Event> {
         println("DEBUG [EventRepositoryImpl] getEvent(page=$page) called")
 
-        val cachedEvents = getCachedEvents()
-        if (cachedEvents.isNotEmpty()) {
-            println("DEBUG [EventRepositoryImpl] Returning ${cachedEvents.size} cached events")
-            return PagedResult(
-                data = cachedEvents,
-                page = 0,
-                totalPages = 1,
-                totalElements = cachedEvents.size.toLong(),
-                isLast = true
-            )
-        }
-
+        // Luôn ưu tiên gọi API trước
         return try {
             val response = eventRemote.getEvent(page)
             println("DEBUG [EventRepositoryImpl] raw response — code=${response.code}, message='${response.message}'")
@@ -51,6 +40,18 @@ class EventRepositoryImpl(
                 )
             } else {
                 println("DEBUG [EventRepositoryImpl] WARNING: content is empty!")
+                // Nếu API trả về rỗng nhưng có cache thì dùng cache
+                val cachedEvents = getCachedEvents()
+                if (cachedEvents.isNotEmpty() && page == 1) {
+                    println("DEBUG [EventRepositoryImpl] Using ${cachedEvents.size} cached events as fallback")
+                    return PagedResult(
+                        data = cachedEvents,
+                        page = 0,
+                        totalPages = 1,
+                        totalElements = cachedEvents.size.toLong(),
+                        isLast = true
+                    )
+                }
                 PagedResult(
                     data = emptyList(),
                     page = 0,
@@ -61,13 +62,19 @@ class EventRepositoryImpl(
             }
         } catch (e: Exception) {
             println("DEBUG [EventRepositoryImpl] Error fetching events: ${e.message}")
-            PagedResult(
-                data = cachedEvents,
-                page = 0,
-                totalPages = 1,
-                totalElements = cachedEvents.size.toLong(),
-                isLast = true
-            )
+            // Chỉ dùng cache khi gọi API thất bại
+            val cachedEvents = getCachedEvents()
+            if (cachedEvents.isNotEmpty()) {
+                println("DEBUG [EventRepositoryImpl] Returning ${cachedEvents.size} cached events as fallback")
+                return PagedResult(
+                    data = cachedEvents,
+                    page = 0,
+                    totalPages = 1,
+                    totalElements = cachedEvents.size.toLong(),
+                    isLast = true
+                )
+            }
+            throw e
         }
     }
 
