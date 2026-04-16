@@ -38,7 +38,8 @@ class HomeViewModel(
                 try {
                     val result = categoryRepo.getAllCategories()
                     println("DEBUG [HomeViewModel] categories OK: ${result.size}")
-                    result
+                    // Thêm mục "Tất cả" vào đầu danh sách
+                    listOf(CategoryItem(id = -1, name = "Tất cả", isSelected = false)) + result
                 } catch (e: Exception) {
                     val msg = e.message ?: ""
                     println("DEBUG [HomeViewModel] ERROR categories: $msg")
@@ -117,8 +118,17 @@ class HomeViewModel(
 
     fun onCategorySelected(category: CategoryItem) {
         _homeState.update { state ->
-            val updatedCategories = state.categories.map { it.copy(isSelected = it.id == category.id) }
-            val filtered = filterByCategoryAndQuery(state.allEvents, category.id, updatedCategories, state.searchQuery)
+            val updatedCategories = state.categories.map { 
+                it.copy(isSelected = it.id == category.id)
+            }
+            
+            // Nếu chọn "Tất cả" (id = -1), hiển thị tất cả sự kiện
+            val filtered = if (category.id == -1) {
+                state.allEvents
+            } else {
+                filterByCategoryAndQuery(state.allEvents, category.id, updatedCategories, state.searchQuery)
+            }
+            
             state.copy(
                 categories = updatedCategories,
                 selectedCategoryId = category.id,
