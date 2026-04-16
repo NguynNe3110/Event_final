@@ -38,7 +38,6 @@ class HomeViewModel(
                 try {
                     val result = categoryRepo.getAllCategories()
                     println("DEBUG [HomeViewModel] categories OK: ${result.size}")
-                    // Thêm mục "Tất cả" vào đầu danh sách
                     listOf(CategoryItem(id = -1, name = "Tất cả", isSelected = false)) + result
                 } catch (e: Exception) {
                     val msg = e.message ?: ""
@@ -122,7 +121,6 @@ class HomeViewModel(
                 it.copy(isSelected = it.id == category.id)
             }
             
-            // Nếu chọn "Tất cả" (id = -1), hiển thị tất cả sự kiện
             val filtered = if (category.id == -1) {
                 state.allEvents
             } else {
