@@ -16,10 +16,6 @@ class TicketLocalDataSource(private val ticketDao: TicketDao) {
         ticketDao.insertTickets(tickets)
     }
     
-    suspend fun cacheTicket(ticket: TicketEntity) {
-        ticketDao.insertTicket(ticket)
-    }
-    
     suspend fun clearAllTickets() {
         ticketDao.deleteAllTickets()
     }

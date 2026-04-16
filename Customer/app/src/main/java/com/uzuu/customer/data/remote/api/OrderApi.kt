@@ -21,7 +21,6 @@ interface OrderApi {
         @Query("size") size: Int = 20
     ): BaseResponseDto<PageResponse<OrderResponseDto>>
 
-    /** Thanh toán chỉ những mục được chọn trong giỏ */
     @POST("orders/checkout-selected")
     suspend fun checkoutSelected(
         @Query("paymentMethod") paymentMethod: String,

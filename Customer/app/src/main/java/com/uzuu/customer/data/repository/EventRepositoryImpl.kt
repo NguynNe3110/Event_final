@@ -17,7 +17,6 @@ class EventRepositoryImpl(
     override suspend fun getEvent(page: Int): PagedResult<Event> {
         println("DEBUG [EventRepositoryImpl] getEvent(page=$page) called")
 
-        // Ưu tiên: Nếu có dữ liệu cache, trả về ngay để load nhanh
         val cachedEvents = getCachedEvents()
         if (cachedEvents.isNotEmpty()) {
             println("DEBUG [EventRepositoryImpl] Returning ${cachedEvents.size} cached events")
@@ -38,7 +37,6 @@ class EventRepositoryImpl(
             println("DEBUG [EventRepositoryImpl] result — content=${pageData.content.size}, totalPages=${pageData.totalPages}, totalElements=${pageData.totalElements}, isLast=${pageData.last}, currentPage=${pageData.number}")
 
             if (pageData.content.isNotEmpty()) {
-                // Cache the events locally
                 val events = pageData.content.map { it.eventDtoToDomain() }
                 val entities = events.map { it.toEntity() }
                 eventLocal.cacheEvents(entities)
@@ -63,7 +61,6 @@ class EventRepositoryImpl(
             }
         } catch (e: Exception) {
             println("DEBUG [EventRepositoryImpl] Error fetching events: ${e.message}")
-            // Return cached data on error (already checked above, but keep as fallback)
             PagedResult(
                 data = cachedEvents,
                 page = 0,

@@ -57,7 +57,6 @@ class CartFragment : Fragment() {
     private fun setupRecycler() {
         cartAdapter = CartItemAdapter(
             onCheckedChange = { itemId, checked ->
-                // Nếu user tick thủ công → cập nhật state
                 viewModel.toggleItemSelection(itemId)
             },
             onQuantityChange = { itemId, qty -> viewModel.updateItemQuantity(itemId, qty) }
@@ -95,28 +94,23 @@ class CartFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.cartState.collect { state ->
-                    // Loading
                     binding.progress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
-                    // Empty / content
                     val isEmpty = state.items.isEmpty() && !state.isLoading
                     binding.tvEmpty.visibility         = if (isEmpty) View.VISIBLE else View.GONE
                     binding.recyclerCart.visibility    = if (!isEmpty) View.VISIBLE else View.GONE
                     binding.cardCheckout.visibility    = if (!isEmpty) View.VISIBLE else View.GONE
                     binding.toolbarSelection.visibility = if (!isEmpty) View.VISIBLE else View.GONE
 
-                    // Danh sách
                     cartAdapter.selectedIds = state.selectedItemIds
                     cartAdapter.submitList(state.items)
 
-                    // Checkbox chọn tất cả (tránh vòng lặp)
                     binding.checkboxSelectAll.setOnCheckedChangeListener(null)
                     binding.checkboxSelectAll.isChecked = state.isAllSelected
                     binding.checkboxSelectAll.setOnCheckedChangeListener { _, _ ->
                         viewModel.toggleSelectAll()
                     }
 
-                    // Hiển thị tổng tiền: nếu đang chọn → hiện tổng đã chọn
                     val totalToShow = if (state.hasSelection) state.selectedTotal else state.totalAmount
                     val label = if (state.hasSelection)
                         "Đã chọn (${state.selectedItemIds.size}):"
@@ -125,7 +119,6 @@ class CartFragment : Fragment() {
                     binding.tvTotalLabel.text = label
                     binding.tvTotal.text = "${fmt.format(totalToShow.toLong())}đ"
 
-                    // Nút checkout-selected chỉ active khi có lựa chọn
                     binding.btnCheckoutSelected.isEnabled = state.hasSelection
                     binding.btnDeleteSelected.isEnabled   = state.hasSelection
 

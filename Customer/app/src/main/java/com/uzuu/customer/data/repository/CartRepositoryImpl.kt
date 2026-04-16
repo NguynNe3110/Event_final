@@ -16,14 +16,11 @@ class CartRepositoryImpl(
 
     private fun isOk(code: Int) = code == 200 || code == 0 || code == 1000
 
-    /** Lưu toàn bộ cart (header + items) xuống Room */
     private suspend fun cacheCart(cart: Cart) {
         local.cacheCart(cart.toEntity())
         local.clearCartItems()
         local.cacheCartItems(cart.items.map { it.toEntity() })
     }
-
-    // ── Get cart ──────────────────────────────────────────────────────────────
 
     override suspend fun getCart(): ApiResult<Cart> =
         safeApiCall {
@@ -37,15 +34,12 @@ class CartRepositoryImpl(
                     throw Exception(r.message ?: "Không lấy được giỏ hàng")
                 }
             } catch (e: Exception) {
-                // Khi mất mạng → fallback về cache
                 val cartEntity = local.getCart()
                     ?: throw Exception("Không có dữ liệu giỏ hàng trong bộ nhớ")
                 val items = local.getAllCartItems()
                 cartEntity.toDomain(items)
             }
         }
-
-    // ── Add to cart ───────────────────────────────────────────────────────────
 
     override suspend fun addToCart(ticketTypeId: Long, quantity: Int): ApiResult<Cart> =
         safeApiCall {
@@ -57,8 +51,6 @@ class CartRepositoryImpl(
             } else throw Exception(r.message ?: "Thêm vào giỏ thất bại")
         }
 
-    // ── Clear cart ────────────────────────────────────────────────────────────
-
     override suspend fun clearCart(): ApiResult<Unit> =
         safeApiCall {
             val r = remote.clearCart()
@@ -67,8 +59,6 @@ class CartRepositoryImpl(
                 Unit
             } else throw Exception(r.message ?: "Xóa giỏ thất bại")
         }
-
-    // ── Update item quantity ──────────────────────────────────────────────────
 
     override suspend fun updateCartItem(itemId: Long, quantity: Int): ApiResult<Cart> =
         safeApiCall {
@@ -80,7 +70,6 @@ class CartRepositoryImpl(
             } else throw Exception(r.message ?: "Cập nhật số lượng thất bại")
         }
 
-    // ── Delete item ───────────────────────────────────────────────────────────
 
     override suspend fun deleteCartItem(itemId: Long): ApiResult<Cart> =
         safeApiCall {

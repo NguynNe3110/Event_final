@@ -70,7 +70,6 @@ class HomeBottomSheet(
                 ?.navigate(HomeFragmentDirections.actionHomeFragmentToEventDetail(event))
         }
 
-        // ── Thêm vào giỏ ────────────────────────────────────────────────────
         binding.btnAddToCart.setOnClickListener {
             val selected = ticketAdapter.getSelectedQuantities()
             if (selected.isEmpty()) {

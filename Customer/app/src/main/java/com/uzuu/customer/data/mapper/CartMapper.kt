@@ -7,8 +7,6 @@ import com.uzuu.customer.data.remote.dto.response.CartResponseDto
 import com.uzuu.customer.domain.model.Cart
 import com.uzuu.customer.domain.model.CartItem
 
-// ── DTO → Domain ──────────────────────────────────────────────────────────────
-
 fun CartResponseDto.toDomain(): Cart {
     return Cart(
         id          = id,
@@ -29,7 +27,6 @@ fun CartItemResponseDto.toDomain(): CartItem {
     )
 }
 
-// ── Domain → Entity ───────────────────────────────────────────────────────────
 
 fun Cart.toEntity(): CartEntity = CartEntity(
     id          = id,
@@ -45,8 +42,6 @@ fun CartItem.toEntity(): CartItemEntity = CartItemEntity(
     unitPrice      = unitPrice,
     subtotal       = subtotal
 )
-
-// ── Entity → Domain ───────────────────────────────────────────────────────────
 
 fun CartEntity.toDomain(items: List<CartItemEntity>): Cart = Cart(
     id          = id,

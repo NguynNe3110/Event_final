@@ -23,7 +23,6 @@ class CartItemAdapter(
         private val fmt = NumberFormat.getNumberInstance(Locale("vi", "VN"))
     }
 
-    /** Set id đang được chọn — cập nhật từ Fragment khi state thay đổi */
     var selectedIds: Set<Long> = emptySet()
         set(value) {
             field = value
@@ -48,14 +47,12 @@ class CartItemAdapter(
             tvQuantity.text    = item.quantity.toString()
             tvSubtotal.text    = "${fmt.format(item.subtotal.toLong())}đ"
 
-            // Checkbox chọn để thanh toán / xóa
-            checkboxSelect.setOnCheckedChangeListener(null)      // tránh vòng lặp
+            checkboxSelect.setOnCheckedChangeListener(null)
             checkboxSelect.isChecked = item.id in selectedIds
             checkboxSelect.setOnCheckedChangeListener { _, checked ->
                 onCheckedChange(item.id, checked)
             }
 
-            // Tăng / giảm số lượng
             btnMinus.setOnClickListener {
                 onQuantityChange(item.id, item.quantity - 1)
             }

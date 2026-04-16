@@ -6,7 +6,6 @@ import com.uzuu.customer.data.remote.dto.response.MyTicketResponseDto
 import com.uzuu.customer.domain.model.CategoryTicket
 import com.uzuu.customer.domain.model.MyTicket
 
-// ── CategoryTicket ────────────────────────────────────────────────────────────
 
 fun CategoryTicketResponseDto.ticketDtoToDomain(): CategoryTicket {
     return CategoryTicket(
@@ -18,8 +17,6 @@ fun CategoryTicketResponseDto.ticketDtoToDomain(): CategoryTicket {
     )
 }
 
-// ── MyTicket DTO → Domain ─────────────────────────────────────────────────────
-
 fun MyTicketResponseDto.toDomain(): MyTicket = MyTicket(
     id             = id,
     eventName      = eventName,
@@ -29,9 +26,6 @@ fun MyTicketResponseDto.toDomain(): MyTicket = MyTicket(
     status         = status,
     usedAt         = usedAt
 )
-
-// ── MyTicket DTO → Entity (để cache) ─────────────────────────────────────────
-// eventId và ticketTypeId không có trong MyTicketResponseDto → dùng 0L
 
 fun MyTicketResponseDto.toEntity(): TicketEntity = TicketEntity(
     id             = id,
@@ -44,8 +38,6 @@ fun MyTicketResponseDto.toEntity(): TicketEntity = TicketEntity(
     status         = status,
     usedAt         = usedAt
 )
-
-// ── Entity → Domain ───────────────────────────────────────────────────────────
 
 fun TicketEntity.toMyTicketDomain(): MyTicket = MyTicket(
     id             = id,

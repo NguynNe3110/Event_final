@@ -36,7 +36,6 @@ class EventDetailFragment : Fragment() {
     }
 
     private fun bindData(event: Event) {
-        // Ảnh banner
         val imageUrl = EventAdapter.fixImageUrl(event.imageUrls.firstOrNull())
         Glide.with(binding.imgEventDetail)
             .load(imageUrl)
@@ -62,7 +61,6 @@ class EventDetailFragment : Fragment() {
         binding.txtStatus.text      = statusLabel
         binding.txtStatus.setTextColor(statusColor)
 
-        // RecyclerView loại vé (dùng lại adapter, tắt click +/-)
         val ticketAdapter = CategoryTicketAdapter()
         binding.recyclerTicketTypes.apply {
             layoutManager = LinearLayoutManager(context)

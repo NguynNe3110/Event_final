@@ -23,7 +23,6 @@ class CartViewModel(
     private val _cartEvent = MutableSharedFlow<CartUiEvent>(extraBufferCapacity = 3)
     val cartEvent = _cartEvent.asSharedFlow()
 
-    // ── Load ─────────────────────────────────────────────────────────────────
     fun loadCart() {
         viewModelScope.launch {
             _cartState.update { it.copy(isLoading = true) }
@@ -35,7 +34,6 @@ class CartViewModel(
                             isLoading = false,
                             items = cart.items,
                             totalAmount = cart.totalAmount,
-                            // Bỏ các id đã chọn mà không còn tồn tại
                             selectedItemIds = it.selectedItemIds
                                 .filter { id -> cart.items.any { item -> item.id == id } }
                                 .toSet()
@@ -50,7 +48,6 @@ class CartViewModel(
         }
     }
 
-    // ── Selection ─────────────────────────────────────────────────────────────
     fun toggleItemSelection(itemId: Long) {
         _cartState.update { state ->
             val newSet = state.selectedItemIds.toMutableSet()
@@ -67,7 +64,6 @@ class CartViewModel(
         }
     }
 
-    // ── Update quantity ───────────────────────────────────────────────────────
     fun updateItemQuantity(itemId: Long, quantity: Int) {
         if (quantity <= 0) {
             return
@@ -85,7 +81,6 @@ class CartViewModel(
         }
     }
 
-    // ── Delete selected items ─────────────────────────────────────────────────
     fun deleteSelectedItems() {
         val ids = _cartState.value.selectedItemIds
         if (ids.isEmpty()) {
@@ -122,7 +117,6 @@ class CartViewModel(
         }
     }
 
-    // ── Clear all ─────────────────────────────────────────────────────────────
     fun onClearCart() {
         viewModelScope.launch {
             _cartState.update { it.copy(isLoading = true) }
@@ -143,12 +137,10 @@ class CartViewModel(
         }
     }
 
-    // ── Payment method ────────────────────────────────────────────────────────
     fun onPaymentSelected(method: String) {
         _cartState.update { it.copy(selectedPayment = method) }
     }
 
-    // ── Checkout all ──────────────────────────────────────────────────────────
     fun onCheckout() {
         val state = _cartState.value
         if (state.items.isEmpty()) {
@@ -171,7 +163,6 @@ class CartViewModel(
         }
     }
 
-    // ── Checkout selected ─────────────────────────────────────────────────────
     fun onCheckoutSelected() {
         val state = _cartState.value
         if (!state.hasSelection) {

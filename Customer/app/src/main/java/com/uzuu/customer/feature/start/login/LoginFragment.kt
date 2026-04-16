@@ -46,7 +46,6 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupEvent()
 
-        // có thể làm cho quên mk từ login -> forget
         val username = args.usernameStr
         if(!username.isNullOrEmpty()) {
             viewModel.observe(username)

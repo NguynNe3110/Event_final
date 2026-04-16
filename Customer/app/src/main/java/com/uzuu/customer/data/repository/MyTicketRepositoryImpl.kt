@@ -31,8 +31,6 @@ class MyTicketRepositoryImpl(
                     val tickets = response.result.map { it.toDomain() }
                     Log.d(TAG, "API trả về ${tickets.size} vé. Bắt đầu lưu cache...")
                     
-                    // Cache: lưu mới trực tiếp ( REPLACE sẽ tự update nếu trùng id )
-                    // Không xóa cũ trước để tránh mất cache nếu có lỗi xảy ra sau đó
                     local.cacheTickets(response.result.map { it.toEntity() })
                     
                     Log.d(TAG, "Đã lưu cache thành công. Trả về ${tickets.size} vé.")
@@ -43,7 +41,6 @@ class MyTicketRepositoryImpl(
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Lỗi khi gọi API: ${e.message}. Đang fallback về cache...", e)
-                // Khi mất mạng hoặc lỗi → fallback về cache
                 val cached = local.getAllTickets()
                 Log.d(TAG, "Cache hiện có ${cached.size} vé.")
                 
@@ -52,7 +49,7 @@ class MyTicketRepositoryImpl(
                     cached.map { it.toMyTicketDomain() }
                 } else {
                     Log.e(TAG, "Không có cache. Ném lại exception.")
-                    throw e // Không có cache → trả về lỗi
+                    throw e
                 }
             }
         }

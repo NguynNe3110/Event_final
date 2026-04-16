@@ -7,17 +7,13 @@ import kotlinx.coroutines.flow.Flow
 class CategoryLocalDataSource(private val categoryDao: CategoryDao) {
     
     fun observeAllCategories(): Flow<List<CategoryEntity>> = categoryDao.observeAllCategories()
-    
+
     suspend fun getAllCategories(): List<CategoryEntity> = categoryDao.getAllCategories()
     
     suspend fun getCategoryById(id: Int): CategoryEntity? = categoryDao.getCategoryById(id)
-    
+
     suspend fun cacheCategories(categories: List<CategoryEntity>) {
         categoryDao.insertCategories(categories)
-    }
-    
-    suspend fun cacheCategory(category: CategoryEntity) {
-        categoryDao.insertCategory(category)
     }
     
     suspend fun clearAllCategories() {

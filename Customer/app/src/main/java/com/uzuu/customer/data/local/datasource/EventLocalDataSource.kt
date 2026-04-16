@@ -16,11 +16,7 @@ class EventLocalDataSource(private val eventDao: EventDao) {
     suspend fun cacheEvents(events: List<EventEntity>) {
         eventDao.insertEvents(events)
     }
-    
-    suspend fun cacheEvent(event: EventEntity) {
-        eventDao.insertEvent(event)
-    }
-    
+
     suspend fun clearAllEvents() {
         eventDao.deleteAllEvents()
     }

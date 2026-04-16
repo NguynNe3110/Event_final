@@ -23,7 +23,6 @@ class EventAdapter(
             override fun areContentsTheSame(oldItem: Event, newItem: Event) = oldItem == newItem
         }
 
-
         fun fixImageUrl(url: String?): String? {
             if (url.isNullOrBlank()) return null
             return url.replace("http://localhost", "http://192.168.51.88")

@@ -60,7 +60,6 @@ class HomeFragment : Fragment() {
         viewModel.init()
     }
 
-    // Sync avatar mỗi khi quay lại tab Home (user có thể vừa đổi ảnh ở Personal)
     override fun onResume() {
         super.onResume()
         viewModel.startPolling(15_000L)  // 15 giây/lần

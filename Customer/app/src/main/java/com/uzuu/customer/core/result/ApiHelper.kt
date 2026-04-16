@@ -17,18 +17,12 @@ suspend fun <T> safeApiCall(block: suspend () -> T): ApiResult<T> {
     }
 }
 
-/**
- * Trích xuất thông báo lỗi từ response của backend
- * Ưu tiên lấy message từ JSON response, nếu không có thì dùng message mặc định
- */
 private fun extractErrorMessage(e: HttpException): String {
     return try {
         val errorBody = e.response()?.errorBody()?.string()
         if (!errorBody.isNullOrEmpty()) {
-            // Thử parse JSON để lấy message
             try {
                 val jsonObject = JSONObject(errorBody)
-                // Các trường thường gặp cho message
                 val message = jsonObject.optString("message")
                     ?: jsonObject.optString("msg")
                     ?: jsonObject.optString("error")
@@ -38,7 +32,6 @@ private fun extractErrorMessage(e: HttpException): String {
                     return message
                 }
                 
-                // Nếu có object data chứa message
                 if (jsonObject.has("data")) {
                     val dataObj = jsonObject.optJSONObject("data")
                     dataObj?.let {
@@ -51,10 +44,9 @@ private fun extractErrorMessage(e: HttpException): String {
                     }
                 }
             } catch (jsonException: Exception) {
-                // Không phải JSON, trả về nội dung raw
+
             }
             
-            // Nếu không parse được JSON, trả về nội dung raw nhưng cắt ngắn nếu quá dài
             if (errorBody.length > 200) {
                 errorBody.substring(0, 200) + "..."
             } else {
@@ -68,9 +60,6 @@ private fun extractErrorMessage(e: HttpException): String {
     }
 }
 
-/**
- * Trả về mô tả lỗi tiếng Việt dựa trên HTTP status code
- */
 private fun getHttpErrorDescription(code: Int): String {
     return when (code) {
         400 -> "Yêu cầu không hợp lệ"

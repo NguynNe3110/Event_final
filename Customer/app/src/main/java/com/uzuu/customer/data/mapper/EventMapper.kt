@@ -25,7 +25,6 @@ fun EventResponseDto.eventDtoToDomain(): Event {
     )
 }
 
-/** EventEntity.imageUrls lưu JSON String → giải mã lại thành List<String> */
 fun EventEntity.toDomain(): Event {
     val imageList: List<String> = try {
         if (imageUrls.isBlank()) emptyList()
@@ -55,7 +54,6 @@ fun EventEntity.toDomain(): Event {
     )
 }
 
-/** Event.imageUrls là List<String> → serialize thành JSON String để lưu DB */
 fun Event.toEntity(): EventEntity {
     return EventEntity(
         id            = id,

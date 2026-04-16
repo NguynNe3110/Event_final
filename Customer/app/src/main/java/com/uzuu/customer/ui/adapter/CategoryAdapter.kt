@@ -42,7 +42,6 @@ class CategoryAdapter(
         holder.binding.tvNameCategory.text = item.name
 
         if (item.isSelected) {
-            // Nền xanh đậm, chữ trắng
             holder.binding.root.setCardBackgroundColor(
                 ContextCompat.getColor(ctx, R.color.blue_primary_400)
             )
@@ -52,7 +51,6 @@ class CategoryAdapter(
                 ContextCompat.getColor(ctx, android.R.color.white)
             )
         } else {
-            // Nền nhạt, chữ tối
             holder.binding.root.setCardBackgroundColor(
                 ContextCompat.getColor(ctx, R.color.blue_surface_8)
             )

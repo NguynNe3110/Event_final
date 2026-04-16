@@ -12,7 +12,6 @@ class CategoryRepositoryImpl(
     private val local: CategoryLocalDataSource
 ) : CategoryRepository {
     override suspend fun getAllCategories(): List<CategoryItem> {
-        // Ưu tiên: Nếu có dữ liệu cache, trả về ngay để load nhanh
         val cachedCategories = getCachedCategories()
         if (cachedCategories.isNotEmpty()) {
             println("DEBUG [CategoryRepositoryImpl] Returning ${cachedCategories.size} cached categories")
@@ -21,7 +20,6 @@ class CategoryRepositoryImpl(
 
         return try {
             val response = remote.getAllCategories()
-            // Thêm "Tất cả" ở đầu danh sách với id = -1
             val allCategory = CategoryItem(id = -1, name = "Tất cả", isSelected = true)
             val fromServer = response.result.map {
                 CategoryItem(
@@ -32,7 +30,6 @@ class CategoryRepositoryImpl(
             }
             val result = listOf(allCategory) + fromServer
             
-            // Cache the categories locally (excluding the "Tất cả" item which is added locally)
             val entities = fromServer.map { it.toEntity() }
             local.cacheCategories(entities)
             println("DEBUG [CategoryRepositoryImpl] Cached ${fromServer.size} categories")
@@ -40,10 +37,8 @@ class CategoryRepositoryImpl(
             result
         } catch (e: Exception) {
             println("DEBUG [CategoryRepositoryImpl] Error fetching categories: ${e.message}")
-            // Return cached data on error
             val cachedCategories = getCachedCategories()
             if (cachedCategories.isNotEmpty()) {
-                // Add "Tất cả" to cached data
                 val allCategory = CategoryItem(id = -1, name = "Tất cả", isSelected = true)
                 listOf(allCategory) + cachedCategories
             } else {

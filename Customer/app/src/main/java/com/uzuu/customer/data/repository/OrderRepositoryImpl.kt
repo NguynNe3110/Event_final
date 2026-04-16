@@ -17,8 +17,6 @@ class OrderRepositoryImpl(
 
     private fun isOk(code: Int) = code == 200 || code == 0 || code == 1000
 
-    // ── Checkout all ──────────────────────────────────────────────────────────
-
     override suspend fun checkout(paymentMethod: String): ApiResult<Order> =
         safeApiCall {
             val r = remote.checkout(paymentMethod)
@@ -28,8 +26,6 @@ class OrderRepositoryImpl(
                 order
             } else throw Exception(r.message ?: "Thanh toán thất bại")
         }
-
-    // ── Checkout selected ─────────────────────────────────────────────────────
 
     override suspend fun checkoutSelected(
         paymentMethod: String,
@@ -44,8 +40,6 @@ class OrderRepositoryImpl(
             } else throw Exception(r.message ?: "Thanh toán thất bại")
         }
 
-    // ── Get orders (paged) ────────────────────────────────────────────────────
-
     override suspend fun getMyOrders(page: Int): ApiResult<PagedResult<Order>> =
         safeApiCall {
             try {
@@ -53,7 +47,6 @@ class OrderRepositoryImpl(
                 if (isOk(r.code)) {
                     val p = r.result
                     val orders = p.content.map { it.toDomain() }
-                    // Cache: chỉ xóa + ghi lại khi load trang đầu
                     if (page <= 1) local.clearAllOrders()
                     local.cacheOrders(orders.map { it.toEntity() })
                     PagedResult(
@@ -65,7 +58,6 @@ class OrderRepositoryImpl(
                     )
                 } else throw Exception(r.message ?: "Không lấy được lịch sử đơn hàng")
             } catch (e: Exception) {
-                // Fallback về cache chỉ ở trang đầu
                 if (page <= 1) {
                     val cached = local.getAllOrders()
                     if (cached.isNotEmpty()) {
@@ -83,8 +75,6 @@ class OrderRepositoryImpl(
             }
         }
 }
-
-// ── Extension functions (private) ─────────────────────────────────────────────
 
 private fun OrderResponseDto.toDomain() = Order(
     id            = id,

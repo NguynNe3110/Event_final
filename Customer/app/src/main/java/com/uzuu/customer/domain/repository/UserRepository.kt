@@ -8,12 +8,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    // ── Remote ───────────────────────────────────────────────────────────────
     suspend fun getMyInfo(): ApiResult<UserResponseDto>
 
     suspend fun updateInfo(username: String, request: UserRequestDto): ApiResult<UserResponseDto>
 
-    // ── Local (Room) ──────────────────────────────────────────────────────────
     val users: Flow<List<Users>>
 
     suspend fun createUser(user: Users): Long

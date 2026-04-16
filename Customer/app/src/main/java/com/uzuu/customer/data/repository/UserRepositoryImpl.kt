@@ -19,8 +19,6 @@ class UserRepositoryImpl(
     private val userRemote: UserRemoteDataSource
 ) : UserRepository {
 
-    // ── Remote ───────────────────────────────────────────────────────────────
-
     override suspend fun getMyInfo(): ApiResult<UserResponseDto> =
         safeApiCall {
             val response = userRemote.getMyInfo()
@@ -44,8 +42,6 @@ class UserRepositoryImpl(
             }
         }
 
-    // ── Local (Room) ──────────────────────────────────────────────────────────
-
     override val users: Flow<List<Users>>
         get() = userLocal.observeUser().map { entities -> 
             entities.map { it.userEntityToDomain() }
@@ -55,10 +51,6 @@ class UserRepositoryImpl(
         return userLocal.createUser(user.userdomainToEntity(null))
     }
 
-    /**
-     * Khi update phải giữ lại url avatar cũ.
-     * Fetch entity hiện tại từ DB rồi truyền vào userdomainToEntity(old).
-     */
     override suspend fun updateUser(user: Users): Int {
         val existing = runCatching {
             userLocal.getUserByUsername(user.username)
@@ -70,12 +62,10 @@ class UserRepositoryImpl(
         return try {
             userLocal.getUserByUsername(username).userEntityToDomain()
         } catch (e: Exception) {
-            // If not found in local, try to fetch from remote and cache
             val result = userRemote.getMyInfo()
             if (result.code == 200 || result.code == 0 || result.code == 1000) {
                 val userDto = result.result
                 val domainUser = userDto.userDtoToDomain()
-                // Cache the user locally
                 userLocal.createUser(domainUser.userdomainToEntity(null))
                 domainUser
             } else {
